@@ -4,7 +4,7 @@ import {
   TextField, Button, Checkbox, Snackbar, Alert, Paper, Drawer, Avatar, Divider,
 } from '@mui/material';
 import {
-  Settings as SettingsIcon, Delete as DeleteIcon, AccessTime as TimeIcon,
+  Settings as SettingsIcon, Delete as DeleteIcon,
   ChevronLeft, ChevronRight, CalendarToday as CalendarIcon, Info as InfoIcon,
   Close as CloseIcon, Menu as MenuIcon,
   CalendarMonth as CalendarMonthIcon, Psychology as PsychologyIcon, FitnessCenter as FitnessCenterIcon,
@@ -13,8 +13,8 @@ import planDefaultIcon from '../../imports/1.png';
 import strategyDefaultIcon from '../../imports/2.png';
 import inspireDefaultIcon from '../../imports/3.png';
 import trainingDefaultIcon from '../../imports/4.png';
-import clockImage from '../../../assets/b19535988c3f20c59372f5ff6bd4c5b8.jpg';
-import ClockPicker from './ClockPicker';
+// import clockImage from '../../../assets/b19535988c3f20c59372f5ff6bd4c5b8.jpg';
+// import ClockPicker from './ClockPicker';
 
 // ---------- 图片编辑器（完整保留） ----------
 function ImageEditor({ imageUrl, onUpdate, initialScale = 100, initialPosX = 50, initialPosY = 50, initialOpacity = 100 }) {
@@ -181,8 +181,8 @@ export default function MobileScheduleView() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
-  const [newPlanStartTime, setNewPlanStartTime] = useState('09:00');
-  const [newPlanEndTime, setNewPlanEndTime] = useState('10:00');
+  // const [newPlanStartTime, setNewPlanStartTime] = useState('09:00');
+  // const [newPlanEndTime, setNewPlanEndTime] = useState('10:00');
   const [newPlanContent, setNewPlanContent] = useState('');
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -203,14 +203,14 @@ export default function MobileScheduleView() {
   const [strategyIcon, setStrategyIcon] = useState('');
   const [inspireIcon, setInspireIcon] = useState('');
   const [trainingIcon, setTrainingIcon] = useState('');
-  
+
   // ========== 新增：名字编辑对话框 ==========
   const [nameEditOpen, setNameEditOpen] = useState(false);
   const [tempUserName, setTempUserName] = useState('');
 
-  // ========== 新增：钟表选择器状态 ==========
-  const [clockPickerOpen, setClockPickerOpen] = useState(false);
-  const [pickingTarget, setPickingTarget] = useState<'start' | 'end'>('start');
+  // ========== 钟表选择器状态（已注释） ==========
+  // const [clockPickerOpen, setClockPickerOpen] = useState(false);
+  // const [pickingTarget, setPickingTarget] = useState<'start' | 'end'>('start');
 
   const iconKeys = {
     plan: 'planIconV2',
@@ -389,12 +389,12 @@ export default function MobileScheduleView() {
     if (!newPlanContent.trim()) return;
     const newPlan: Plan = {
       id: Date.now().toString(),
-      startTime: newPlanStartTime,
-      endTime: newPlanEndTime,
+      startTime: '',
+      endTime: '',
       content: newPlanContent,
       completed: false,
     };
-    const updated = [...plans, newPlan].sort((a, b) => a.startTime.localeCompare(b.startTime));
+    const updated = [...plans, newPlan];
     setAllPlans({ ...allPlans, [dateKey]: updated });
     setNewPlanContent('');
     setDialogOpen(false);
@@ -433,22 +433,21 @@ export default function MobileScheduleView() {
     return date;
   });
 
-  // ========== 钟表选择器确认回调 ==========
-  const handleClockConfirm = (hour: number, minute: number) => {
-    const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-    if (pickingTarget === 'start') {
-      setNewPlanStartTime(time);
-    } else {
-      setNewPlanEndTime(time);
-    }
-    setClockPickerOpen(false);
-  };
+  // ========== 钟表选择器回调（已注释） ==========
+  // const handleClockConfirm = (hour: number, minute: number) => {
+  //   const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  //   if (pickingTarget === 'start') {
+  //     setNewPlanStartTime(time);
+  //   } else {
+  //     setNewPlanEndTime(time);
+  //   }
+  //   setClockPickerOpen(false);
+  // };
 
-  // ========== 打开钟表选择器 ==========
-  const openClockPicker = (target: 'start' | 'end') => {
-    setPickingTarget(target);
-    setClockPickerOpen(true);
-  };
+  // const openClockPicker = (target: 'start' | 'end') => {
+  //   setPickingTarget(target);
+  //   setClockPickerOpen(true);
+  // };
 
   return (
     <Box sx={{ position: 'relative', minHeight: '100%', bgcolor: '#FAFAFA' }}>
@@ -549,11 +548,23 @@ export default function MobileScheduleView() {
                 <Paper key={plan.id} sx={{ p: 1.5, bgcolor: plan.completed ? alpha('#4caf50',0.1) : 'rgba(255,255,255,0.9)', border: `1px solid ${plan.completed ? '#4caf50' : '#e0e0e0'}` }}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Checkbox checked={plan.completed} onChange={() => togglePlan(plan.id)} size="small" />
+                    {/* 时间 Chip 已注释
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ bgcolor: alpha('#6366f1',0.1), px: 1, py: 0.5, borderRadius: 2 }}>
                       <TimeIcon sx={{ fontSize: 14, color: 'primary.main' }} />
                       <Typography variant="caption" fontWeight={600}>{plan.startTime} - {plan.endTime}</Typography>
                     </Stack>
-                    <Typography sx={{ flex: 1, textDecoration: plan.completed ? 'line-through' : 'none', opacity: plan.completed ? 0.6 : 1 }}>{plan.content}</Typography>
+                    */}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        flex: 1,
+                        fontSize: '0.8rem',
+                        textDecoration: plan.completed ? 'line-through' : 'none',
+                        opacity: plan.completed ? 0.6 : 1,
+                      }}
+                    >
+                      {plan.content}
+                    </Typography>
                     <IconButton size="small" onClick={() => deletePlan(plan.id)}><DeleteIcon fontSize="small" color="error" /></IconButton>
                   </Stack>
                 </Paper>
@@ -568,60 +579,16 @@ export default function MobileScheduleView() {
         </Box>
       </Box>
 
-      {/* ========== 添加计划对话框（已修改：使用钟表选择器） ========== */}
+      {/* ========== 添加计划对话框（已移除时间选择，只填文字） ========== */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="sm" fullWidth>
         <DialogContent>
-          <Typography variant="h6" fontWeight={700} mb={3}> 添加计划</Typography>
+          <Typography variant="h6" fontWeight={700} mb={3}>添加计划</Typography>
           <Stack spacing={2.5}>
+            {/* 时间按钮整段已注释
             <Stack direction="row" spacing={2} alignItems="center">
-              {/* 开始时间 - 使用钟表选择器 */}
-              <Button
-                variant="outlined"
-                onClick={() => openClockPicker('start')}
-                sx={{
-                  flex: 1,
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  py: 1.5,
-                  borderColor: '#e0e0e0',
-                  justifyContent: 'center',
-                  '&:hover': {
-                    borderColor: '#6366f1',
-                  },
-                }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <span>🕐</span>
-                  <Typography variant="body2" fontWeight={600}>
-                    {newPlanStartTime}
-                  </Typography>
-                </Stack>
-              </Button>
-              <Typography variant="body2" color="text.secondary">—</Typography>
-              {/* 结束时间 - 使用钟表选择器 */}
-              <Button
-                variant="outlined"
-                onClick={() => openClockPicker('end')}
-                sx={{
-                  flex: 1,
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  py: 1.5,
-                  borderColor: '#e0e0e0',
-                  justifyContent: 'center',
-                  '&:hover': {
-                    borderColor: '#6366f1',
-                  },
-                }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <span>🕐</span>
-                  <Typography variant="body2" fontWeight={600}>
-                    {newPlanEndTime}
-                  </Typography>
-                </Stack>
-              </Button>
+              ...
             </Stack>
+            */}
             <TextField
               fullWidth
               multiline
@@ -630,6 +597,7 @@ export default function MobileScheduleView() {
               placeholder="输入计划内容..."
               value={newPlanContent}
               onChange={(e) => setNewPlanContent(e.target.value)}
+              sx={{ '& .MuiInputBase-input': { fontSize: '0.85rem' } }}
             />
             <Stack direction="row" spacing={2}>
               <Button variant="contained" onClick={addPlan} disabled={!newPlanContent.trim()} sx={{ flex: 1, textTransform: 'none' }}>确定</Button>
@@ -639,7 +607,8 @@ export default function MobileScheduleView() {
         </DialogContent>
       </Dialog>
 
-      {/* ========== 钟表选择器 ========== */}
+      {/* ========== 钟表选择器（已注释） ========== */}
+      {/*
       <ClockPicker
         open={clockPickerOpen}
         title={pickingTarget === 'start' ? '选择开始时间' : '选择结束时间'}
@@ -649,6 +618,7 @@ export default function MobileScheduleView() {
         onClose={() => setClockPickerOpen(false)}
         onConfirm={handleClockConfirm}
       />
+      */}
 
       {/* 日期选择对话框 */}
       <Dialog open={datePickerOpen} onClose={() => setDatePickerOpen(false)} maxWidth="xs" fullWidth>
